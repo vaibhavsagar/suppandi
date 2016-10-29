@@ -49,7 +49,11 @@ server = serveObject
 serveObject :: Text -> Handler GitObject
 serveObject textRef = do
     let ref = encodeUtf8 textRef
-    liftIO $ fromJust <$> withRepo ".git" (readObject ref)
+    maybeObject <- liftIO $ withRepo ".git" (readObject ref)
+    maybe
+        (throwError err404 {errBody = "git object not found"})
+        return
+        maybeObject
 
 userAPI :: Proxy API
 userAPI = Proxy
