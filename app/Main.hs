@@ -1,7 +1,5 @@
 {-# LANGUAGE DataKinds #-}
-{-# LANGUAGE DeriveGeneric #-}
 {-# LANGUAGE FlexibleInstances #-}
-{-# LANGUAGE GeneralizedNewtypeDeriving #-}
 {-# LANGUAGE MultiParamTypeClasses #-}
 {-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE ScopedTypeVariables #-}
@@ -51,7 +49,7 @@ serveObject textRef = do
     let ref = encodeUtf8 textRef
     maybeObject <- liftIO $ withRepo ".git" (readObject ref)
     maybe
-        (throwError err404 {errBody = "git object not found"})
+        (throwError err404 {errBody = "Object not found."})
         return
         maybeObject
 
