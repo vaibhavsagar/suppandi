@@ -20,33 +20,17 @@ library
                      , base-compat
                      , text
                      , aeson
-                     , aeson-compat
-                     , blaze-html
                      , directory
-                     , blaze-markup
                      , containers
                      , servant
                      , servant-server
-                     , servant-client
-                     , servant-docs
-                     , servant-js
                      , warp
-                     , http-media
-                     , lucid
-                     , time
                      , string-conversions
                      , bytestring
-                     , attoparsec
-                     , mtl
-                     , random
-                     , js-jquery
                      , wai
-                     , http-types
                      , transformers
-                     , markdown-unlit >= 0.4
-                     , http-client
                      , duffer
-  default-language:    Haskell2010
+ default-language:    Haskell2010
 
 executable suppandi-exe
   hs-source-dirs:      app
@@ -57,31 +41,15 @@ executable suppandi-exe
                      , base-compat
                      , text
                      , aeson
-                     , aeson-compat
-                     , blaze-html
                      , directory
-                     , blaze-markup
                      , containers
                      , servant
                      , servant-server
-                     , servant-client
-                     , servant-docs
-                     , servant-js
                      , warp
-                     , http-media
-                     , lucid
-                     , time
                      , string-conversions
                      , bytestring
-                     , attoparsec
-                     , mtl
-                     , random
-                     , js-jquery
                      , wai
-                     , http-types
                      , transformers
-                     , markdown-unlit >= 0.4
-                     , http-client
                      , duffer
   default-language:    Haskell2010
 
