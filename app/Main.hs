@@ -22,7 +22,6 @@ import qualified Text.Blaze.Html
 
 import Duffer.Unified
 import Duffer.Loose.Objects (GitObject)
-import Duffer.Loose.JSON
 import Duffer.WithRepo
 
 type API = "git" :> Capture "ref" Text :> Get '[JSON] GitObject
