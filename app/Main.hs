@@ -24,10 +24,12 @@ import Duffer.Unified
 import Duffer.Loose.Objects (GitObject)
 import Duffer.WithRepo
 
-type API = "git" :> Capture "ref" Text :> Get '[JSON] GitObject
+type API = "git" :> Capture    "ref"  Text :> Get '[JSON] GitObject
+      :<|> "ref" :> CaptureAll "path" Text :> Get '[JSON] GitObject
 
 server :: Server API
 server = serveObject
+    :<|> serveRef
 
 serveObject :: Text -> Handler GitObject
 serveObject textRef = do
@@ -37,6 +39,11 @@ serveObject textRef = do
         (throwError err404 {errBody = "Object not found."})
         return
         maybeObject
+
+serveRef :: [Text] -> Handler GitObject
+serveRef textPath = liftIO (withRepo ".git" (resolveRef path)) >>=
+    maybe (throwError err404 {errBody = "Reference not found."}) return
+    where path = unpack $ intercalate "/" textPath
 
 userAPI :: Proxy API
 userAPI = Proxy
