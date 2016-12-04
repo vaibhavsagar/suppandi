@@ -7,18 +7,10 @@
 
 module Main where
 
-import Prelude ()
-import Prelude.Compat
-
 import Data.Text
 import Data.Text.Encoding
 import Network.Wai.Handler.Warp
 import Servant
-import System.Directory
-import Text.Blaze
-import Text.Blaze.Html.Renderer.Utf8
-import qualified Data.Aeson.Parser
-import qualified Text.Blaze.Html
 
 import Duffer.Unified
 import Duffer.Loose.Objects (GitObject)
@@ -32,21 +24,17 @@ server = serveObject
     :<|> serveRef
 
 serveObject :: Text -> Handler GitObject
-serveObject textRef = do
-    let ref = encodeUtf8 textRef
-    maybeObject <- liftIO $ withRepo ".git" (readObject ref)
-    maybe
-        (throwError err404 {errBody = "Object not found."})
-        return
-        maybeObject
+serveObject textRef = liftIO (withRepo ".git" (readObject ref)) >>=
+    maybe (throwError err404 {errBody = "Object not found."}) return
+    where ref = encodeUtf8 textRef
 
 serveRef :: [Text] -> Handler GitObject
 serveRef textPath = liftIO (withRepo ".git" (resolveRef path)) >>=
     maybe (throwError err404 {errBody = "Reference not found."}) return
     where path = unpack $ intercalate "/" textPath
 
-userAPI :: Proxy API
-userAPI = Proxy
+dufferAPI :: Proxy API
+dufferAPI = Proxy
 
 main :: IO ()
-main = run 8081 (serve userAPI server)
+main = run 8081 (serve dufferAPI server)
