@@ -34,7 +34,13 @@ let
                        then pkgs.haskellPackages
                        else pkgs.haskell.packages.${compiler};
 
-  drv = haskellPackages.callPackage f {};
+  modifiedHaskellPackages = haskellPackages.override {
+    overrides = self: super: {
+      duffer = self.callPackage ../duffer {};
+    };
+  };
+
+  drv = modifiedHaskellPackages.callPackage f {};
 
 in
 
