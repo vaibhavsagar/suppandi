@@ -13,6 +13,7 @@ import Data.Text
 import Data.Text.Encoding
 import Network.Wai.Handler.Warp
 import Servant
+import System.Environment (getArgs)
 
 import Duffer.Unified
 import Duffer.Loose.Objects (GitObject, Ref)
@@ -54,4 +55,6 @@ dufferAPI :: Proxy API
 dufferAPI = Proxy
 
 main :: IO ()
-main = run 80 (serve dufferAPI server)
+main = do
+    port:_ <- getArgs
+    run (read port :: Int) (serve dufferAPI server)
