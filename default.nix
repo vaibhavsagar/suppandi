@@ -36,7 +36,16 @@ let
 
   modifiedHaskellPackages = haskellPackages.override {
     overrides = self: super: {
-      duffer = self.callPackage ../duffer {};
+      duffer = pkgs.haskell.lib.dontCheck (
+        self.callPackage (
+          pkgs.fetchFromGitHub {
+            owner = "vaibhavsagar";
+            repo = "duffer";
+            rev = "f8579527eadb13d8ac726cf43d340f5dffd6a161";
+            sha256 = "01cfm2fjaji4826z0flnr6vdrgs98j9rfa7ac9ybc134xnsnxglj";
+          }
+        ) {}
+      );
     };
   };
 
