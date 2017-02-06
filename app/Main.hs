@@ -1,19 +1,16 @@
 {-# LANGUAGE DataKinds #-}
-{-# LANGUAGE FlexibleInstances #-}
-{-# LANGUAGE MultiParamTypeClasses #-}
 {-# LANGUAGE OverloadedStrings #-}
-{-# LANGUAGE ScopedTypeVariables #-}
 {-# LANGUAGE TypeOperators #-}
 
 module Main where
 
 import Data.Aeson              (ToJSON(..), FromJSON(..), Value(..), object
                                ,pairs, (.=), (.:))
-import Data.Text
+import Data.Text                (Text, intercalate, unpack)
 import Data.Text.Encoding
-import Network.Wai.Handler.Warp
+import Network.Wai.Handler.Warp (run)
 import Servant
-import System.Environment (getArgs)
+import System.Environment       (getArgs)
 
 import Duffer.Unified
 import Duffer.Loose.Objects (GitObject, Ref)
