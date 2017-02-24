@@ -4,7 +4,7 @@ packages:
 - '.'
 - location:
     git: git@github.com:vaibhavsagar/duffer
-    commit: 8996002ee6a94cd9ac31b0c6bdcb8e59be835984
+    commit: f816236922a2f70e092bace54ddf7c22796834e8
   extra-dep: true
 extra-deps:
 - http-api-data-0.3.2
