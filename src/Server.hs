@@ -2,7 +2,7 @@
 {-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE TypeOperators #-}
 
-module Server where
+module Server (API, server) where
 
 import Prelude ()
 import Prelude.Compat
