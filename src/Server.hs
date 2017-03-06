@@ -15,9 +15,10 @@ import GHC.Generics
 import Network.Wai
 import Network.Wai.Handler.Warp
 import Servant
-import Duffer.Unified
+
+import Duffer.Unified       (readObject, resolveRef, writeObject)
 import Duffer.Loose.Objects (GitObject, Ref)
-import Duffer.WithRepo
+import Duffer.WithRepo      (WithRepo, liftIO, withRepo)
 
 newtype JSONRef = JSONRef { unJSONRef :: Ref }
 
