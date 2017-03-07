@@ -20,7 +20,7 @@ import Duffer.Unified       (readObject, resolveRef, writeObject)
 import Duffer.Loose.Objects (GitObject, Ref)
 import Duffer.WithRepo      (WithRepo, liftIO, withRepo)
 
-newtype JSONRef = JSONRef { unJSONRef :: Ref }
+newtype JSONRef = JSONRef Ref
 
 instance ToJSON JSONRef where
     toJSON     (JSONRef ref) = object ["ref" .= decodeUtf8 ref]
