@@ -4,13 +4,13 @@
 
 module Server (API, server) where
 
+import Control.Monad.IO.Class (MonadIO)
+import Data.Aeson
 import Prelude ()
 import Prelude.Compat
 
 import Control.Monad.Except
 import Control.Monad.Reader
-import Data.Aeson.Compat
-import Data.Aeson.Types
 import GHC.Generics
 import Network.Wai
 import Network.Wai.Handler.Warp
@@ -38,6 +38,9 @@ server :: Server API
 server = serveObject
     :<|> serveRef
     :<|> writeObj
+
+execute :: (MonadIO m) => FilePath -> WithRepo a -> m a
+execute path = liftIO . withRepo path
 
 serveObject :: Text -> Handler GitObject
 serveObject textRef = liftIO (withRepo ".git" (readObject ref)) >>=
