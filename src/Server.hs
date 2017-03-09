@@ -6,14 +6,9 @@ module Server (API, server) where
 
 import Control.Monad.IO.Class (MonadIO)
 import Data.Aeson
-import Prelude ()
-import Prelude.Compat
 
-import Control.Monad.Except
-import Control.Monad.Reader
-import GHC.Generics
-import Network.Wai
-import Network.Wai.Handler.Warp
+import Data.Text              (Text, intercalate, unpack)
+import Data.Text.Encoding     (encodeUtf8, decodeUtf8)
 import Servant
 
 import Duffer.Unified       (readObject, resolveRef, writeObject)
