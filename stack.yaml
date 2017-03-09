@@ -3,7 +3,7 @@ extra-package-dbs: []
 packages:
 - '.'
 - location:
-    git: git@github.com:vaibhavsagar/duffer
+    git: https://github.com/vaibhavsagar/duffer.git
     commit: f816236922a2f70e092bace54ddf7c22796834e8
   extra-dep: true
 extra-deps:
