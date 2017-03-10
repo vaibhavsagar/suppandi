@@ -38,14 +38,14 @@ execute :: (MonadIO m) => FilePath -> WithRepo a -> m a
 execute path = liftIO . withRepo path
 
 serveObject :: Text -> Handler GitObject
-serveObject textRef = liftIO (withRepo ".git" (readObject ref)) >>=
+serveObject textRef = execute ".git" (readObject ref) >>=
     maybe (throwError err404 {errBody = "Object not found."}) return
     where ref = encodeUtf8 textRef
 
 serveRef :: [Text] -> Handler GitObject
-serveRef textPath = liftIO (withRepo ".git" (resolveRef path)) >>=
+serveRef textPath = execute ".git" (resolveRef path) >>=
     maybe (throwError err404 {errBody = "Reference not found."}) return
     where path = unpack $ intercalate "/" textPath
 
 writeObj :: GitObject -> Handler JSONRef
-writeObj obj = JSONRef <$> liftIO (withRepo ".git" (writeObject obj))
+writeObj obj = JSONRef <$> execute ".git" (writeObject obj)
