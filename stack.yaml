@@ -4,11 +4,9 @@ packages:
 - '.'
 - location:
     git: https://github.com/vaibhavsagar/duffer.git
-    commit: f816236922a2f70e092bace54ddf7c22796834e8
+    commit: 3f8fc242250e209285ed9adf8b6ac591e32d8e07
   extra-dep: true
 extra-deps:
-- http-api-data-0.3.2
 - pipes-zlib-0.4.4.1
-- servant-0.9.1.1
-- servant-server-0.9.1.1
-resolver: lts-6.30
+resolver: lts-8.9
+allow-newer: true
