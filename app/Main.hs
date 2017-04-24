@@ -1,20 +1,17 @@
-{-# LANGUAGE DataKinds #-}
-{-# LANGUAGE OverloadedStrings #-}
-{-# LANGUAGE TypeOperators #-}
+{-# LANGUAGE TypeApplications #-}
 
 module Main where
 
-import Data.Proxy
+import Control.Monad            ((<=<))
+import Data.Maybe               (listToMaybe, fromMaybe)
 import Network.Wai.Handler.Warp (run)
-import Servant                  (serve)
 import System.Environment       (getArgs)
+import Text.Read                (readMaybe)
 
-import Server
+import Server (service)
 
-dufferAPI :: Proxy API
-dufferAPI = Proxy
 
 main :: IO ()
 main = do
-    port:_ <- getArgs
-    run (read port :: Int) (serve dufferAPI server)
+    port <- fromMaybe 8080 . (readMaybe @Int <=< listToMaybe) <$> getArgs
+    run port service
