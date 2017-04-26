@@ -30,7 +30,6 @@ executable suppandi
   build-depends:       base
                      , suppandi
                      , warp
-                     , servant-server
   default-language:    Haskell2010
 
 test-suite suppandi-test
