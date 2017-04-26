@@ -1,12 +1,10 @@
-flags: {}
-extra-package-dbs: []
 packages:
 - '.'
 - location:
     git: https://github.com/vaibhavsagar/duffer.git
-    commit: 3f8fc242250e209285ed9adf8b6ac591e32d8e07
+    commit: bcd32cae282eaafee6a91d21a58172cf6597424a
+  subdirs:
+    - duffer
+    - duffer-json
   extra-dep: true
-extra-deps:
-- pipes-zlib-0.4.4.1
-resolver: lts-8.9
-allow-newer: true
+resolver: lts-8.11

@@ -21,6 +21,7 @@ library
                      , aeson
                      , servant-server
                      , duffer
+                     , duffer-json
  default-language:    Haskell2010
 
 executable suppandi
