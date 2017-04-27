@@ -23,7 +23,7 @@ instance ToJSON JSONRef where
     toEncoding (JSONRef ref) = pairs  ("ref" .= decodeUtf8 ref)
 
 instance FromJSON JSONRef where
-    parseJSON (Object v) = JSONRef <$> (encodeUtf8 <$> v .: "ref")
+    parseJSON (Object v) = coerce <$> (encodeUtf8 <$> v .: "ref")
 
 type API = Capture "path" FilePath :>
     (    "git" :>
