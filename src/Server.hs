@@ -1,6 +1,7 @@
 {-# LANGUAGE DataKinds #-}
 {-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE TypeOperators #-}
+{-# LANGUAGE TypeApplications #-}
 
 module Server (service) where
 
@@ -34,7 +35,7 @@ type API = Capture "path" FilePath :>
     )
 
 service :: Application
-service = serve (Proxy :: Proxy API) server
+service = serve (Proxy @API) server
 
 server :: Server API
 server path = (serveObj path :<|> writeObj path) :<|> serveRef path
