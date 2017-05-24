@@ -2,9 +2,9 @@ packages:
 - '.'
 - location:
     git: https://github.com/vaibhavsagar/duffer.git
-    commit: bcd32cae282eaafee6a91d21a58172cf6597424a
+    commit: 404bad52e35b4641c99abfadd117546879804036
   subdirs:
     - duffer
     - duffer-json
   extra-dep: true
-resolver: lts-8.11
+resolver: lts-8.15
