@@ -4,9 +4,8 @@ let
 
   inherit (nixpkgs) pkgs;
 
-  f = { mkDerivation, aeson, base, base-compat, bytestring
-      , containers, directory, duffer, servant, servant-server, stdenv
-      , string-conversions, text, transformers, wai, warp
+  f = { mkDerivation, aeson, base, duffer, duffer-json, servant-server, stdenv
+      , text , warp
       }:
       mkDerivation {
         pname = "suppandi";
@@ -14,16 +13,8 @@ let
         src = ./.;
         isLibrary = true;
         isExecutable = true;
-        libraryHaskellDepends = [
-          aeson base base-compat bytestring containers directory duffer
-          servant servant-server string-conversions text transformers wai
-          warp
-        ];
-        executableHaskellDepends = [
-          aeson base base-compat bytestring containers directory duffer
-          servant servant-server string-conversions text transformers wai
-          warp
-        ];
+        libraryHaskellDepends = [ aeson base duffer duffer-json servant-server text ];
+        executableHaskellDepends = [ base warp ];
         testHaskellDepends = [ base ];
         homepage = "https://github.com/vaibhavsagar/suppandi#readme";
         description = "Initial project template from stack";
@@ -34,17 +25,21 @@ let
                        then pkgs.haskellPackages
                        else pkgs.haskell.packages.${compiler};
 
+  duffer-repo = pkgs.fetchFromGitHub {
+    owner = "vaibhavsagar";
+    repo = "duffer";
+    rev = "818a2ef2624c193f398795bd4bcb63af8214b3c1";
+    sha256 = "0lgrh5gyqfipj2ryikr2i9xb8vyazn79i2qcidyxkx064bkxrirx";
+  };
+
   modifiedHaskellPackages = haskellPackages.override {
     overrides = self: super: {
       duffer = pkgs.haskell.lib.dontCheck (
-        self.callPackage (
-          pkgs.fetchFromGitHub {
-            owner = "vaibhavsagar";
-            repo = "duffer";
-            rev = "f8579527eadb13d8ac726cf43d340f5dffd6a161";
-            sha256 = "01cfm2fjaji4826z0flnr6vdrgs98j9rfa7ac9ybc134xnsnxglj";
-          }
-        ) {}
+        self.callPackage ( "${duffer-repo}/duffer" ) {}
+      );
+
+      duffer-json = pkgs.haskell.lib.dontCheck (
+        self.callPackage ( "${duffer-repo}/duffer-json" ) {}
       );
     };
   };
