@@ -5,15 +5,13 @@
 
 module Server (service) where
 
-import Data.Aeson           (ToJSON(..), FromJSON(..), Value(..), object, pairs
-                            ,(.=), (.:))
-import Data.Coerce          (coerce)
-import Data.Proxy           (Proxy(..))
-import Data.Text            (Text, intercalate, unpack)
-import Data.Text.Encoding   (encodeUtf8, decodeUtf8)
-import Duffer.Unified       (readObject, resolveRef, writeObject)
-import Duffer.WithRepo      (WithRepo, liftIO, withRepo)
-import Duffer.JSON          (GitObjectJSON(GitObjectJSON), RefJSON(RefJSON))
+import Data.Coerce        (coerce)
+import Data.Proxy         (Proxy(Proxy))
+import Data.Text          (Text, intercalate, unpack)
+import Data.Text.Encoding (encodeUtf8)
+import Duffer.Unified     (readObject, resolveRef, writeObject)
+import Duffer.WithRepo    (WithRepo, liftIO, withRepo)
+import Duffer.JSON        (GitObjectJSON(GitObjectJSON), RefJSON(RefJSON))
 import Servant
 
 type API = Capture "path" FilePath :>
