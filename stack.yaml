@@ -7,4 +7,4 @@ packages:
     - duffer
     - duffer-json
   extra-dep: true
-resolver: lts-9.3
+resolver: lts-9.4
