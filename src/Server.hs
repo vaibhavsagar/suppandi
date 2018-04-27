@@ -16,11 +16,11 @@ import Duffer.WithRepo      (WithRepo, liftIO, withRepo)
 import Duffer.JSON          (GitObjectJSON(GitObjectJSON), RefJSON(RefJSON))
 import Servant
 
-type API = Capture "path" FilePath :>
-        ("git" :>
-            (Capture "ref"   Text          :> Get  '[JSON] GitObjectJSON
-        :<|> ReqBody '[JSON] GitObjectJSON :> Post '[JSON] RefJSON)
-    :<|> "ref" :> CaptureAll "path" Text :> Get '[JSON] GitObjectJSON)
+type API = Capture "path" FilePath
+    :> ("git"
+            :>   (Capture "ref"   Text         :> Get  '[JSON] GitObjectJSON
+            :<|> ReqBody '[JSON] GitObjectJSON :> Post '[JSON] RefJSON)
+    :<|> "ref" :> CaptureAll "path" Text       :> Get  '[JSON] GitObjectJSON)
 
 service :: Application
 service = serve @API Proxy server
