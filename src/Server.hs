@@ -21,7 +21,7 @@ type API = Capture "path" FilePath :>
     :<|> "ref" :> CaptureAll "path" Text :> Get '[JSON] GitObjectJSON)
 
 service :: Application
-service = serve (Proxy @API) server
+service = serve @API Proxy server
 
 server :: Server API
 server path = (serveObj path :<|> writeObj path) :<|> serveRef path
