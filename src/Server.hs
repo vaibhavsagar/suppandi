@@ -5,13 +5,15 @@
 
 module Server (service) where
 
-import Data.Coerce        (coerce)
-import Data.Proxy         (Proxy(Proxy))
-import Data.Text          (Text, intercalate, unpack)
-import Data.Text.Encoding (encodeUtf8)
-import Duffer.Unified     (readObject, resolveRef, writeObject)
-import Duffer.WithRepo    (WithRepo, liftIO, withRepo)
-import Duffer.JSON        (GitObjectJSON(GitObjectJSON), RefJSON(RefJSON))
+import Data.ByteString.Lazy (ByteString)
+import Data.Coerce          (coerce)
+import Data.Proxy           (Proxy(Proxy))
+import Data.Text            (Text, intercalate, unpack)
+import Data.Text.Encoding   (encodeUtf8)
+import Duffer.Loose.Objects (GitObject)
+import Duffer.Unified       (readObject, resolveRef, writeObject)
+import Duffer.WithRepo      (WithRepo, liftIO, withRepo)
+import Duffer.JSON          (GitObjectJSON(GitObjectJSON), RefJSON(RefJSON))
 import Servant
 
 type API = Capture "path" FilePath :>
@@ -26,21 +28,17 @@ service = serve @API Proxy server
 server :: Server API
 server path = (serveObj path :<|> writeObj path) :<|> serveRef path
 
-execute :: FilePath -> WithRepo a -> Handler a
-execute = ((.).(.)) liftIO withRepo
+handle :: ByteString -> Maybe GitObject -> Handler GitObjectJSON
+handle errMsg = maybe (throwError err404 {errBody = errMsg}) (return . coerce)
+
+doer :: ByteString -> (a -> WithRepo (Maybe GitObject)) -> FilePath -> (a -> Handler GitObjectJSON)
+doer err f path = (handle err =<<) . liftIO . withRepo path . f
 
 serveObj :: FilePath -> Text -> Handler GitObjectJSON
-serveObj path textRef = execute path (readObject $ encodeUtf8 textRef) >>=
-    maybe
-        (throwError err404 {errBody = "Object not found."})
-        (return . coerce)
+serveObj = doer "Object not found." (readObject . encodeUtf8)
 
 serveRef :: FilePath -> [Text] -> Handler GitObjectJSON
-serveRef repoPath textPath = execute repoPath (resolveRef path) >>=
-    maybe
-        (throwError err404 {errBody = "Reference not found."})
-        (return . coerce)
-    where path = unpack $ intercalate "/" textPath
+serveRef = doer "Reference not found." (resolveRef . unpack . intercalate "/")
 
 writeObj :: FilePath -> GitObjectJSON -> Handler RefJSON
-writeObj path = fmap coerce . execute path . writeObject . coerce
+writeObj path = fmap coerce . liftIO . withRepo path . writeObject . coerce
