@@ -17,5 +17,7 @@ let
   });
 
 in {
-  suppandi = haskellPackages.callCabal2nix "suppandi" ./. {};
+  suppandi = let
+    drv = haskellPackages.callCabal2nix "suppandi" ./. {};
+    in if pkgs.lib.inNixShell then drv.env else drv;
 }
